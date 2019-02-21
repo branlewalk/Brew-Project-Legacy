@@ -1,0 +1,16 @@
+<style>
+.main {
+    height: 500px;
+    width: 500px;
+    font-size: 15px;
+    text-align: center;
+}
+.menu {
+
+}
+.sensor {
+    float: left;
+    display: inline-block;
+    white-space: nowrap;
+}
+</style>

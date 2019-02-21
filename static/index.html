@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+    <script src="jquery-3.3.1.js"></script>
+</head>
+<script>
+function get_HLT() {
+    $.get("HLT", function(data, status){
+     $("#HLT_internal").text(data["internal"]);
+     $("#HLT_temp").text(data["temp"]);
+  })
+}
+function get_MLT() {
+    $.get("MLT", function(data, status){
+     $("#MLT_internal").text(data["internal"]);
+     $("#MLT_temp").text(data["temp"]);
+  })
+}
+function get_BK() {
+    $.get("BK", function(data, status){
+     $("#BK_internal").text(data["internal"]);
+     $("#BK_temp").text(data["temp"]);
+  })
+}
+get_HLT();
+get_MLT();
+get_BK();
+setInterval(function(){
+    get_HLT()
+    get_MLT()
+    get_BK()
+    }, 5000);
+</script>
+<header>
+    <h1>"developing" temp</h1>
+</header>
+<body>
+<div name="menu" class="menu"></div>
+<div class="main">
+    <div name="HLT" class="sensor">
+    <p id="HLT_temp">not reading HLT Temp</p>
+    <p id="HLT_internal">not reading HLT Internal</p>
+    </div>
+    <div name="MLT" class="sensor">
+    <p id="MLT_temp">not reading MLT Temp</p>
+    <p id="MLT_internal">not reading MLT Internal</p>
+    </div>
+    <div name="BK" class="sensor">
+    <p id="BK_temp">not reading BK Temp</p>
+    <p id="BK_internal">not reading BK Internal</p>
+    </div>
+</div>
+</body>
+
+</html>
