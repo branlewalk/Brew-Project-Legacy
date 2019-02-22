@@ -3,6 +3,7 @@ import time
 # import logging
 import Adafruit_MAX31855.MAX31855 as MAX31855
 import Adafruit_GPIO.SPI as SPI
+from typing import Any
 
 
 def c_to_f(c):
@@ -24,17 +25,18 @@ def init_sensor_hardware():
     return MAX31855.MAX31855(spi=SPI.SpiDev(SPI_PORT0, SPI_DEVICE0, max_speed_hz=5000000))
 
 
-def read_temp(sensor):
-    raw = read_raw_temp(sensor)
-    return 'Thermocouple Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['thermo'], c_to_f(raw['thermo'])) + '\n' + \
-           ' Internal Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['internal'], c_to_f(raw['internal']))
+# def read_temp(sensor):
+#     raw = read_raw_temp(sensor)
+#     return 'Thermocouple Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['thermo'], c_to_f(raw['thermo'])) + '\n' + \
+#            ' Internal Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['internal'], c_to_f(raw['internal']))
 
 
-def read_raw_temp(sensor):
-    temp = c_to_f(sensor.readTempC())
-    internal = c_to_f(sensor.readInternalC())
-    # raw = {'internal': internal1, 'thermo': temp1}
-    return {'internal': internal, 'temp': temp}
+def read_sensor_temp(sensor):
+    return c_to_f(sensor.readTempC())
+
+
+def read_internal_temp(sensor):
+    return c_to_f(sensor.readInternalC())
 
 # print(sys.path)
 

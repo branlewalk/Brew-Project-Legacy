@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <script src="jquery-3.3.1.js"></script>
+</head>
+<script>
+function get_temp() {
+    $.ajax({ url: '/temp',
+        type: 'GET',
+        success: function(data){
+            $("#internal").text(data["internal"]);
+            $("#hlt").text(data["hlt"]);
+            $("#mlt").text(data["mlt"]);
+            $("#bk").text(data["bk"]);
+            <!--alert('Success: '+data);-->
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+get_temp()
+setInterval(function(){
+    get_temp()
+    }, 5000);
+</script>
+<header>
+    <h1>"developing" temp</h1>
+</header>
+<body>
+<div class="main">
+    <div class="menu">Room Temp</div>
+    <p id="status">waiting for reading...</p>
+    <p id="internal">not reading Room Temp</p>
+    <div class="sensor">
+        <p>HLT</p>
+        <p id="hlt">not reading HLT Temp</p>
+    </div>
+    <div class="sensor">
+        <p>MLT</p>
+        <p id="mlt">not reading MLT Temp</p>
+    </div>
+    <div class="sensor">
+        <p>BK</p>
+        <p id="bk">not reading BK Temp</p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, url_for
+from flask import Flask, jsonify, url_for, render_template
 import temp
 
 app = Flask(__name__, static_url_path='')
@@ -8,8 +8,8 @@ sensor3 = temp.init_sensor_software(21)
 
 
 @app.route('/')
-def static_file(path):
-    return app.send_static_file(path)
+def index():
+    return render_template('index.html')
 
 
 # @app.route('/raw_temp')
@@ -18,27 +18,31 @@ def static_file(path):
 #     return jsonify(raw)
 
 
-@app.route('/HLT')
-def hlt():
-    raw = temp.read_raw_temp(sensor1)
-    return jsonify(raw)
-
-
-@app.route('/MLT')
-def mlt():
-    raw = temp.read_raw_temp(sensor2)
-    return jsonify(raw)
-
-
-@app.route('/BK')
-def bk():
-    raw = temp.read_raw_temp(sensor3)
-    return jsonify(raw)
+# @app.route('/HLT')
+# def hlt():
+#     raw = temp.read_raw_temp(sensor1)
+#     return jsonify(raw)
+#
+#
+# @app.route('/MLT')
+# def mlt():
+#     raw = temp.read_raw_temp(sensor2)
+#     return jsonify(raw)
+#
+#
+# @app.route('/BK')
+# def bk():
+#     raw = temp.read_raw_temp(sensor3)
+#     return jsonify(raw)
 
 
 @app.route('/temp')
 def thermo():
-    return temp.read_temp(sensor1)
+    hlt = temp.read_sensor_temp(sensor1)
+    mlt = temp.read_sensor_temp(sensor2)
+    bk = temp.read_sensor_temp(sensor3)
+    internal = temp.read_internal_temp(sensor1)
+    return jsonify({'hlt': str(hlt), 'mlt': str(mlt), 'bk': str(bk), 'internal': str(internal)})
 
 
 if __name__ == '__main__':
