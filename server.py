@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, url_for, render_template
-import temp
+from thermo import read_sensor
+import thermo
 
 app = Flask(__name__, static_url_path='')
-sensor1 = temp.init_sensor_software(24)
-sensor2 = temp.init_sensor_software(12)
-sensor3 = temp.init_sensor_software(21)
+# sensor1 = temp.init_sensor_software(24)
+# sensor2 = temp.init_sensor_software(12)
+# sensor3 = temp.init_sensor_software(21)
 
 
 @app.route('/')
@@ -38,11 +39,12 @@ def index():
 
 @app.route('/temp')
 def thermo():
-    hlt = temp.read_sensor_temp(sensor1)
-    mlt = temp.read_sensor_temp(sensor2)
-    bk = temp.read_sensor_temp(sensor3)
-    internal = temp.read_internal_temp(sensor1)
-    return jsonify({'hlt': str(hlt), 'mlt': str(mlt), 'bk': str(bk), 'internal': str(internal)})
+    all_temps = read_sensor()
+    hlt = all_temps[0][1]
+    mlt = all_temps[1][1]
+    bk = all_temps[2][1]
+    return jsonify({'hlt': "{0:4.1f}".format(hlt), 'mlt': "{0:4.1f}".format(mlt), 'bk': "{0:4.1f}".format(bk)})
+
 
 
 if __name__ == '__main__':

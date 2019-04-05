@@ -12,7 +12,6 @@ function get_temp() {
     $.ajax({ url: '/temp',
         type: 'GET',
         success: function(data){
-            $("#internal").text(data["internal"]);
             $("#hlt").text(data["hlt"]);
             $("#mlt").text(data["mlt"]);
             $("#bk").text(data["bk"]);
@@ -52,8 +51,6 @@ setInterval(function(){
 <div class="container">
         <br>
         <h1>Dashboard</h1>
-        <h4>Room Temp</h4>
-        <p id="internal">not reading Room Temp</p>
         <div class="row">
             <div class="col-md-3" style="background-color: #FF9999">
                 <p>HLT</p>

@@ -12,9 +12,9 @@ def c_to_f(c):
 
 # Raspberry Pi software SPI configuration.
 def init_sensor_software(cs):
-    CLK = 25
+    CLK = 18
     CS = cs
-    DO = 18
+    DO = 23
     return MAX31855.MAX31855(CLK, CS, DO)
 
 
@@ -27,7 +27,7 @@ def init_sensor_hardware():
 
 # def read_temp(sensor):
 #     raw = read_raw_temp(sensor)
-#     return 'Thermocouple Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['thermo'], c_to_f(raw['thermo'])) + '\n' + \
+#     return 'Thermocouple Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['thermo.py'], c_to_f(raw['thermo.py'])) + '\n' + \
 #            ' Internal Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(raw['internal'], c_to_f(raw['internal']))
 
 
