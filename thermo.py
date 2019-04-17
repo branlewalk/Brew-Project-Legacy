@@ -1,13 +1,12 @@
-import os
+# import os
 import glob
 import time
 
 
-os.system('modprobe w1-gpio')
-os.system('modprobe w1-therm')
+# os.system('modprobe w1-gpio')
+# os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'
 device_folders = glob.glob(base_dir + '28*')
-print("I am initialized!")
 
 
 def read_temp_raw(device_folder):

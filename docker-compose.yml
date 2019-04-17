@@ -1,0 +1,23 @@
+version: '2'
+services:
+ rabbit:
+   image: arm32v7/rabbitmq:3-management
+   ports:
+    - "5672:5672"
+    - "15672:15672"
+ brew-server:
+   image: brew-server:latest
+   build: .
+   ports:
+    - "8080:80"
+   volumes:
+    - .:/app
+   command: python server.py
+ publisher:
+   image: brew-server:latest
+   build: .
+   links:
+    - rabbit
+   volumes:
+    - .:/app
+   command: python temp_publisher.py
