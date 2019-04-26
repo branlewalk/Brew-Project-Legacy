@@ -1,11 +1,22 @@
 from flask import Flask, jsonify, url_for, render_template
+import os
+import sys
 from thermo import read_sensor
-import thermo
+import pika
+
+import json
+
+on_off = False
 
 app = Flask(__name__, static_url_path='')
-# sensor1 = temp.init_sensor_software(24)
-# sensor2 = temp.init_sensor_software(12)
-# sensor3 = temp.init_sensor_software(21)
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbit', 5672, '/'))
+channel = connection.channel()
+channel.exchange_declare(exchange='temps', exchange_type='fanout')
+channel.queue_delete(queue='current_temps')
+channel.queue_declare(queue='current_temps', arguments={'x-message-ttl': 1000})
+channel.queue_bind(queue='current_temps', exchange='temps')
+connection.close()
 
 
 @app.route('/')
@@ -13,38 +24,47 @@ def index():
     return render_template('index.html')
 
 
-# @app.route('/raw_temp')
-# def raw_temp():
-#     raw = temp.read_raw_temp(sensor1)
-#     return jsonify(raw)
+@app.route('/session')
+def session():
+    if on_off:
+        return 'Stop Session'
+    else:
+        return 'Start Session'
 
 
-# @app.route('/HLT')
-# def hlt():
-#     raw = temp.read_raw_temp(sensor1)
-#     return jsonify(raw)
-#
-#
-# @app.route('/MLT')
-# def mlt():
-#     raw = temp.read_raw_temp(sensor2)
-#     return jsonify(raw)
-#
-#
-# @app.route('/BK')
-# def bk():
-#     raw = temp.read_raw_temp(sensor3)
-#     return jsonify(raw)
+@app.route('/session', methods=['POST'])
+def toggle():
+    global on_off
+    on_off = not on_off
+    send_toggle()
+    return session()
+
+
+def send_toggle():
+    tconnection = pika.BlockingConnection(pika.ConnectionParameters('rabbit', 5672, '/'))
+    tchannel = tconnection.channel()
+    tchannel.exchange_declare(exchange='temps', exchange_type='fanout')
+    tchannel.basic_publish(exchange='temps', routing_key='', body=json.dumps(on_off),
+                           properties=pika.BasicProperties(headers={'type': 'command'}))
+    tconnection.close()
 
 
 @app.route('/temp')
 def thermo():
-    all_temps = read_sensor()
-    hlt = all_temps[0][1]
-    mlt = all_temps[1][1]
-    bk = all_temps[2][1]
-    return jsonify({'hlt': "{0:4.1f}".format(hlt), 'mlt': "{0:4.1f}".format(mlt), 'bk': "{0:4.1f}".format(bk)})
-
+    print("Calling thermo")
+    ctconnection = pika.BlockingConnection(pika.ConnectionParameters('rabbit', 5672, '/'))
+    ctchannel = ctconnection.channel()
+    for method_frame, properties, body in ctchannel.consume('current_temps'):
+        print(body)
+        message_type = properties.headers.get('type')
+        if message_type != 'command':
+            ctconnection.close()
+            # all_temps = read_sensor()
+            temp_list = json.loads(body)
+            hlt = float(temp_list[0])
+            mlt = float(temp_list[1])
+            bk = float(temp_list[2])
+            return jsonify({'hlt': "{0:4.1f}".format(hlt), 'mlt': "{0:4.1f}".format(mlt), 'bk': "{0:4.1f}".format(bk)})
 
 
 if __name__ == '__main__':

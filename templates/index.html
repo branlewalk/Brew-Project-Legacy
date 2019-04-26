@@ -21,6 +21,27 @@ function get_temp() {
             alert('Error: '+request.responseText); }
     });
 }
+function on_off() {
+    $.ajax({ url: '/session',
+        type: 'GET',
+        success: function(data){
+            $("#on_off").text(data);
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+function toggle() {
+    $.ajax({ url: '/session',
+        type: 'POST',
+        success: function(data){
+            $("#on_off").text(data);
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+on_off()
 get_temp()
 setInterval(function(){
     get_temp()
@@ -66,5 +87,14 @@ setInterval(function(){
             </div>
         </div>
 </div>
+<br>
+<div class="container">
+    <div class="row">
+            <div class="col-md-1">
+                <button type="button" id="on_off" onclick="toggle()">Start</button>
+            </div>
+    </div>
+</div>
+</body>
 </body>
 </html>

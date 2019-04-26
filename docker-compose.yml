@@ -8,6 +8,8 @@ services:
  brew-server:
    image: brew-server:latest
    build: .
+   links:
+    - rabbit
    ports:
     - "8080:80"
    volumes:
@@ -21,3 +23,27 @@ services:
    volumes:
     - .:/app
    command: python temp_publisher.py
+ persistor:
+   image: brew-server:latest
+   build: .
+   links:
+    - db
+    - rabbit
+   volumes:
+    - .:/app
+   command: python temp_persistor.py
+ db:
+    image: mysql-bs:latest
+#    command: --default-authentication-plugin=mysql_native_password
+#    environment:
+#     - MYSQL_ROOT_PASSWORD=password
+#     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+#     - MYSQL_ROOT_HOST=%
+#     - MYSQL_USER=user
+#     - MYSQL_PASSWORD=password
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080

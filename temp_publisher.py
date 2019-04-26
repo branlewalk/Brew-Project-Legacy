@@ -12,7 +12,8 @@ channel.exchange_declare(exchange='temps', exchange_type='fanout')
 
 
 def publish(temp):
-    channel.basic_publish(exchange='temps', routing_key='', body=json.dumps(temp))
+    channel.basic_publish(exchange='temps', routing_key='', body=json.dumps(temp),
+                          properties=pika.BasicProperties(headers={'type': 'data'}))
 
 
 while True:
