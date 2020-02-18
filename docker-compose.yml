@@ -5,8 +5,8 @@ services:
    ports:
     - "5672:5672"
     - "15672:15672"
- brew-server:
-   image: brew-server:latest
+ server:
+   image: python-image:latest
    build: .
    links:
     - rabbit
@@ -16,7 +16,7 @@ services:
     - .:/app
    command: python server.py
  publisher:
-   image: brew-server:latest
+   image: python-image:latest
    build: .
    links:
     - rabbit
@@ -24,7 +24,7 @@ services:
     - .:/app
    command: python temp_publisher.py
  persistor:
-   image: brew-server:latest
+   image: python-image:latest
    build: .
    links:
     - db
@@ -33,7 +33,9 @@ services:
     - .:/app
    command: python temp_persistor.py
  db:
-    image: mysql-bs:latest
+    image: mysql-db:latest
+    ports:
+      - 3306:3306
 #    command: --default-authentication-plugin=mysql_native_password
 #    environment:
 #     - MYSQL_ROOT_PASSWORD=password

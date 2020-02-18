@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, url_for, render_template
+from brewsession import BrewSession
 import os
 import sys
-from thermo import read_sensor
 import pika
 
+
 import json
+
+brew_session = BrewSession()
 
 on_off = False
 
@@ -26,17 +29,19 @@ def index():
 
 @app.route('/session')
 def session():
-    if on_off:
-        return 'Stop Session'
-    else:
-        return 'Start Session'
+    return jsonify(brew_session.prompt())
+    # if on_off:
+    #     return 'Stop Session'
+    # else:
+    #     return 'Start Session'
 
 
 @app.route('/session', methods=['POST'])
 def toggle():
-    global on_off
-    on_off = not on_off
-    send_toggle()
+    # global on_off
+    # on_off = not on_off
+    brew_session.toggle_step()
+    # send_toggle()
     return session()
 
 
