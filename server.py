@@ -1,5 +1,7 @@
+
+
 from flask import Flask, jsonify, url_for, render_template
-from brewsession import BrewSession
+from brew_session import BrewSession
 import os
 import sys
 import pika
@@ -21,6 +23,10 @@ channel.queue_declare(queue='current_temps', arguments={'x-message-ttl': 1000})
 channel.queue_bind(queue='current_temps', exchange='temps')
 connection.close()
 
+# handle recipes
+#     recipes.py -> backend
+#     recipes.html -> front_end
+
 
 @app.route('/')
 def index():
@@ -30,18 +36,17 @@ def index():
 @app.route('/session')
 def session():
     return jsonify(brew_session.prompt())
-    # if on_off:
-    #     return 'Stop Session'
-    # else:
-    #     return 'Start Session'
+
+
+@app.route('/timer')
+def timer():
+    brew_session.timer()
+    return 'Ok'
 
 
 @app.route('/session', methods=['POST'])
 def toggle():
-    # global on_off
-    # on_off = not on_off
     brew_session.toggle_step()
-    # send_toggle()
     return session()
 
 
@@ -69,8 +74,11 @@ def thermo():
             hlt = float(temp_list[0])
             mlt = float(temp_list[1])
             bk = float(temp_list[2])
-            return jsonify({'hlt': "{0:4.1f}".format(hlt), 'mlt': "{0:4.1f}".format(mlt), 'bk': "{0:4.1f}".format(bk)})
-
+            temps = {'hlt': hlt, 'mlt': mlt, 'bk': bk}
+            print(temps)
+            brew_session.set_temp(temps)
+            return jsonify(temps)
+# {'hlt': hlt, 'mlt': "{0:4.1f}".format(mlt), 'bk': "{0:4.1f}".format(bk)}
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')

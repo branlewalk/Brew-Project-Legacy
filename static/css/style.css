@@ -1,6 +1,12 @@
-img {
+#image {
     width: 300px;
     height: 150px;
 }
+
+body {
+  background-color: gray;
+}
+
+
 
 

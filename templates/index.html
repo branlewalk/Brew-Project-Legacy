@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+<!--    <link href="css/style.css" rel="stylesheet" type="text/css">-->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="/js/jquery-3.3.1.js"></script>
 </head>
@@ -12,9 +13,9 @@ function get_temp() {
     $.ajax({ url: '/temp',
         type: 'GET',
         success: function(data){
-            $("#hlt").text(data["hlt"]);
-            $("#mlt").text(data["mlt"]);
-            $("#bk").text(data["bk"]);
+            $("#hlt").text(data["hlt"].toPrecision(3));
+            $("#mlt").text(data["mlt"].toPrecision(3));
+            $("#bk").text(data["bk"].toPrecision(3));
             <!--alert('Success: '+data);-->
         },
         error: function (request, status, error) {
@@ -26,6 +27,11 @@ function on_off() {
         type: 'GET',
         success: function(data){
             $("#on_off").text(data["button"]);
+            if (data["button"] == "") {
+                $("#buttondiv").hide();
+            } else {
+                $("#buttondiv").show();
+            }
             $("#prompt").text(data["prompt"]);
             $("#image").attr('src',data["image"]);
         },
@@ -38,6 +44,11 @@ function toggle() {
         type: 'POST',
         success: function(data){
             $("#on_off").text(data["button"]);
+            if (data["button"] == "") {
+                $("#buttondiv").hide();
+            } else {
+                $("#buttondiv").show();
+            }
             $("#prompt").text(data["prompt"]);
             $("#image").attr('src',data["image"]);
         },
@@ -49,7 +60,16 @@ on_off()
 get_temp()
 setInterval(function(){
     get_temp()
-    }, 5000);
+    on_off()
+    }, 1000);
+setInterval(function(){
+    $.ajax({ url: '/timer',
+        type: 'GET',
+        success: function(data){},
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+    }, 1000);
 </script>
 <header>
 
@@ -101,7 +121,7 @@ setInterval(function(){
 <br>
 <div class="container">
     <div class="row">
-            <div class="col-md-1">
+            <div id="buttondiv" class="col-md-1">
                 <button type="button" id="on_off" onclick="toggle()">Start</button>
             </div>
     </div>
