@@ -33,6 +33,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/recipes')
+def recipes():
+    return render_template('recipes.html')
+
+
 @app.route('/session')
 def session():
     return jsonify(brew_session.prompt())
