@@ -38,6 +38,16 @@ def recipes():
     return render_template('recipes.html')
 
 
+@app.route('/recipe')
+def recipe():
+    return jsonify({'name': 'Coors', 'strike_temp': 148})
+
+
+@app.route('/recipelist')
+def recipelist():
+    return jsonify(["Coors", "Rainier"])
+
+
 @app.route('/session')
 def session():
     return jsonify(brew_session.prompt())
