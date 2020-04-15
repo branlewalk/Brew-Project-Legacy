@@ -1,3 +1,0 @@
-Flask==1.0.2
-pika==1.0.0
-mysql-connector-python==8.0.15
