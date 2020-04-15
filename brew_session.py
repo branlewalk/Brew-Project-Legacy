@@ -5,6 +5,10 @@ class Recipe:
 
     def __init__(self):
 
+        self.id = 1
+        self.name = '808'
+        self.completed = False
+
         self.hlt = 60
         self.mlt = 60
         self.bk = 60
@@ -29,6 +33,13 @@ class Recipe:
         self.mash_out_time = timedelta(seconds=10)
         # Hop Time varies 0-60 min
         self.hops_add_time = timedelta(seconds=10)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'completed': self.completed
+        }
 
 
 class BrewSession:
@@ -78,7 +89,6 @@ class BrewStep:
         self.button = 'Next'
         self.message = None
         self.image = None
-        # temp
 
     def toggle_step(self):
         self.session.transition_to(self.next_step())

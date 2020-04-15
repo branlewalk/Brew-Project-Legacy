@@ -1,19 +1,15 @@
-
-
-from flask import Flask, jsonify, url_for, render_template
-from brew_session import BrewSession
+import json
 import os
 import sys
 import pika
-
-
-import json
+from flask import Flask, jsonify, render_template
+import flask_cors
+from brew_session import BrewSession, Recipe
 
 brew_session = BrewSession()
-
 on_off = False
-
 app = Flask(__name__, static_url_path='')
+flask_cors.CORS(app)
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 connection = pika.BlockingConnection(pika.ConnectionParameters('rabbit', 5672, '/'))
 channel = connection.channel()
@@ -23,10 +19,17 @@ channel.queue_declare(queue='current_temps', arguments={'x-message-ttl': 1000})
 channel.queue_bind(queue='current_temps', exchange='temps')
 connection.close()
 
-# handle recipes
-#     recipes.py -> backend
-#     recipes.html -> front_end
 
+# MySQL:
+# app.config['SQLALCHEMY_DATABASE_URI'] = mysql://username:password@server/db
+# [DB_TYPE]+[DB_CONNECTOR]://[USERNAME]:[PASSWORD]@[HOST]:[PORT]/[DB_NAME]
+# db = SQLAlchemy(app)
+# existing db
+# class Buildings(db.Model):
+#     __table__ = db.Model.metadata.tables['BUILDING']
+#
+#     def __repr__(self):
+#         return self.DISTRICT
 
 @app.route('/')
 def index():
@@ -40,7 +43,7 @@ def recipes():
 
 @app.route('/recipe')
 def recipe():
-    return jsonify({'name': 'Coors', 'strike_temp': 148})
+    return jsonify([{'id': 1, 'name': 'Coors', 'completed': False}, Recipe().serialize()])
 
 
 @app.route('/recipelist')
