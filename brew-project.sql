@@ -20,7 +20,7 @@ USE brew_project ;
 -- -----------------------------------------------------
 -- Table brew_project.images
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.images (
+CREATE TABLE IF NOT EXISTS brew_project.image (
   image_id INT NOT NULL AUTO_INCREMENT,
   image_url VARCHAR(45) NOT NULL,
   PRIMARY KEY (image_id));
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS brew_project.images (
 -- -----------------------------------------------------
 -- Table brew_project.styles
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.styles (
+CREATE TABLE IF NOT EXISTS brew_project.style (
   style_id INT NOT NULL AUTO_INCREMENT,
   style_name VARCHAR(45) NOT NULL,
   style_category VARCHAR(45) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS brew_project.styles (
   PRIMARY KEY (style_id),
   CONSTRAINT image_id
     FOREIGN KEY (image_id)
-    REFERENCES brew_project.images (image_id)
+    REFERENCES brew_project.image (image_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS brew_project.recipe (
   PRIMARY KEY (recipe_id),
   CONSTRAINT r_style_id
     FOREIGN KEY (style_id)
-    REFERENCES brew_project.styles (style_id)
+    REFERENCES brew_project.style (style_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT r_image_id
@@ -90,23 +90,23 @@ CREATE TABLE IF NOT EXISTS brew_project.recipe (
     ON UPDATE NO ACTION,
   CONSTRAINT r_notes_id
     FOREIGN KEY (notes_id)
-    REFERENCES brew_project.notes (notes_id)
+    REFERENCES brew_project.note (notes_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table brew_project.malts
+-- Table brew_project.malt
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.malts (
-  malts_id INT NOT NULL AUTO_INCREMENT,
-  malts_name VARCHAR(45) NOT NULL,
-  malts_origin VARCHAR(16),
-  malts_category VARCHAR(16),
-  malts_type VARCHAR(16) NOT NULL,
-  malts_lovibond INT NOT NULL,
-  malts_ppg FLOAT NOT NULL,
-  PRIMARY KEY (malts_id));
+CREATE TABLE IF NOT EXISTS brew_project.malt (
+  malt_id INT NOT NULL AUTO_INCREMENT,
+  malt_name VARCHAR(45) NOT NULL,
+  malt_origin VARCHAR(16),
+  malt_category VARCHAR(16),
+  malt_type VARCHAR(16) NOT NULL,
+  malt_lovibond INT NOT NULL,
+  malt_ppg FLOAT NOT NULL,
+  PRIMARY KEY (malt_id));
 
 
 -- -----------------------------------------------------
@@ -150,16 +150,16 @@ CREATE TABLE IF NOT EXISTS brew_project.other (
 
 
 -- -----------------------------------------------------
--- Table brew_project.malts ingredient
+-- Table brew_project.malt ingredient
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.malts_ingredient (
-  malts_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS brew_project.malt_ingredient (
+  malt_id INT NOT NULL,
   recipe_id INT NOT NULL,
-  malts_ingred_qty FLOAT NOT NULL,
-  PRIMARY KEY (malts_id, recipe_id),
-  CONSTRAINT m_malts_id
-    FOREIGN KEY (malts_id)
-    REFERENCES brew_project.malts (malts_id)
+  malt_ingred_qty FLOAT NOT NULL,
+  PRIMARY KEY (malt_id, recipe_id),
+  CONSTRAINT m_malt_id
+    FOREIGN KEY (malt_id)
+    REFERENCES brew_project.malt (malt_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT m_recipe_id
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS brew_project.hops_ingredient (
 -- -----------------------------------------------------
 -- Table brew_project.yeast_ingredients
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.yeast_ingredients (
+CREATE TABLE IF NOT EXISTS brew_project.yeast_ingredient (
   yeast_id INT NOT NULL,
   recipe_id INT NOT NULL,
   yeast_ingred_qty INT NOT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS brew_project.yeast_ingredients (
 -- -----------------------------------------------------
 -- Table brew_project.other_ingredients
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.other_ingredients (
+CREATE TABLE IF NOT EXISTS brew_project.other_ingredient (
   other_id INT NOT NULL,
   recipe_id INT NOT NULL,
   other_ingred_qty INT NOT NULL,
