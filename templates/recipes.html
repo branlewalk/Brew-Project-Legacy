@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script>
+
+    function recipe_list() {
+        $.ajax({ url: '/recipelist',
+            type: 'GET',
+            success: function(data){
+                $("#recipes").empty()
+                for(var i=0; i < data.length; i++) {
+                    var option = document.createElement("option");
+                    $("#recipes").append(new Option(data[i], data[i]));
+                }
+                <!--alert('Success: '+data);-->
+            },
+            error: function (request, status, error) {
+                alert('Error: '+request.responseText); }
+        });
+    }
+    function recipe() {
+        $.ajax({ url: '/recipe',
+            type: 'GET',
+            success: function(data){
+                $("#name").val(data["name"]);
+                $("#striketemp").val(data["strike_temp"]);
+                <!--alert('Success: '+data);-->
+            },
+            error: function (request, status, error) {
+                alert('Error: '+request.responseText); }
+        });
+    }
+    recipe_list()
+    recipe()
+    </script>
+</head>
+
+<header>
+
+</header>
+<body>
+<!--Navigation Bar-->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" >RP-BP</a>
+    <div class="navbar-header">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#">Home </a>
+            <a class="nav-item nav-link active" href="/">Dashboard <span class="sr-only">(current)</span></a></li>
+            <a class="nav-item nav-link active" href="/recipes">Recipes</a>
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container">
+    <br>
+    <h2>Recipe List</h2>
+    <label for="recipes">Choose a recipe:</label>
+        <select id="recipes">
+        </select>
+    <br>
+    <h2>Recipe Form</h2>
+        <form action="/recipe" method="post">
+            <label for="name">Recipe name:</label>
+            <input type="text" id="name"><br>
+            <label for="striketemp">Strike Temperature:</label>
+            <input type="text" id="striketemp"><br>
+            <input type="submit" value="Submit">
+        </form>
+<!--Add forms for Recipe Entry-->
+<!--    Recipe input includes:-->
+<!--    Inputs:-->
+<!--        * Grain Bill - Mash-->
+<!--        * Water Volume - Mash-->
+<!--        * Mash Thickness - Mash - Sparge-->
+<!--        * Mash Rest Temperature - Mash-->
+<!--        * Grain Temperature - Mash - Sparge-->
+<!--        * Batch Size - Sparge-->
+<!--        * Boil Time - Sparge - Boil-->
+<!--        * Hops/adjuncts - Boil-->
+<!--        * Fermentation Temp - Cooling-->
+<!--        * Mash Out Temp-->
+<!--        * Mash Out Time-->
+<!--        * Boil Temp-->
+<!--    Constants:-->
+<!--        * Wort Shrinkage - Sparge-->
+<!--        * Grain absorption - Sparge-->
+<!--        * Boil Off per hour - Sparge-->
+<!--        * Temperature Ranges - All-->
+<!--    Derived Values:-->
+<!--        * Volume of Strike Water - Sparge-->
+<!--        * Strike Temperature - Sparge-->
+
+</div>
+
+
+</body>
+</body>
+</html>

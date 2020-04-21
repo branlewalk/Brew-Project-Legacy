@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+<!--    <link href="css/style.css" rel="stylesheet" type="text/css">-->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="/js/jquery-3.3.1.js"></script>
+</head>
+<script>
+function get_temp() {
+    $.ajax({ url: '/temp',
+        type: 'GET',
+        success: function(data){
+            $("#hlt").text(data["hlt"].toPrecision(3));
+            $("#mlt").text(data["mlt"].toPrecision(3));
+            $("#bk").text(data["bk"].toPrecision(3));
+            <!--alert('Success: '+data);-->
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+function on_off() {
+    $.ajax({ url: '/session',
+        type: 'GET',
+        success: function(data){
+            $("#on_off").text(data["button"]);
+            if (data["button"] == "") {
+                $("#buttondiv").hide();
+            } else {
+                $("#buttondiv").show();
+            }
+            $("#prompt").text(data["prompt"]);
+            $("#image").attr('src',data["image"]);
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+function toggle() {
+    $.ajax({ url: '/session',
+        type: 'POST',
+        success: function(data){
+            $("#on_off").text(data["button"]);
+            if (data["button"] == "") {
+                $("#buttondiv").hide();
+            } else {
+                $("#buttondiv").show();
+            }
+            $("#prompt").text(data["prompt"]);
+            $("#image").attr('src',data["image"]);
+        },
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+}
+on_off()
+get_temp()
+setInterval(function(){
+    get_temp()
+    on_off()
+    }, 1000);
+setInterval(function(){
+    $.ajax({ url: '/timer',
+        type: 'GET',
+        success: function(data){},
+        error: function (request, status, error) {
+            alert('Error: '+request.responseText); }
+    });
+    }, 1000);
+</script>
+<header>
+
+</header>
+<body>
+<!--Scripts-->
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+
+<!--Navigation Bar-->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" >RP-BP</a>
+    <div class="navbar-header">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#">Home </a>
+            <a class="nav-item nav-link active" href="#">Dashboard <span class="sr-only">(current)</span></a></li>
+            <a class="nav-item nav-link" href="#">Recipes </a>
+        </div>
+    </div>
+</nav>
+
+<!--The Dashboard-->
+<div class="container">
+        <br>
+        <h1>Dashboard</h1>
+
+        <div class="row">
+            <img src="images/s1.png" id="image" width="100%" height="100%" alt="Brew System">
+        </div>
+        <div class="row">
+            <p id="prompt">Where Prompt will Show</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3" style="background-color: #FF9999">
+                <p>HLT</p>
+                <p id="hlt">not reading HLT Temp</p>
+            </div>
+            <div class="col-md-3" style="background-color: #FF9900">
+                <p>MLT</p>
+                <p id="mlt">not reading MLT Temp</p>
+            </div>
+            <div class="col-md-3" style="background-color: #FF99FF">
+                <p>BK</p>
+                <p id="bk">not reading BK Temp</p>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container">
+    <div class="row">
+            <div id="buttondiv" class="col-md-1">
+                <button type="button" id="on_off" onclick="toggle()">Start</button>
+            </div>
+    </div>
+</div>
+</body>
+</body>
+</html>
