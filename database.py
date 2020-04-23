@@ -112,23 +112,25 @@ class OtherSchema(ma.Schema):
 class MaltIngredient(db.Model):
     malt_id = db.Column(db.Integer, db.ForeignKey('malt.malt_id'), primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.recipe_id'), primary_key=True)
-    malts_ingred_qty = db.Column(db.Integer, nullable=False)
+    malt_ingred_qty = db.Column(db.Integer, nullable=False)
+    db.ForeignKeyConstraint(['malt_id', 'recipe_id'], ['malt.malt_id', 'recipe.recipe_id'])
 
-    def __init__(self, malt_id, recipe_id, malts_ingred_qty):
+    def __init__(self, malt_id, recipe_id, malt_ingred_qty):
         self.malt_id = malt_id
         self.recipe_id = recipe_id
-        self.malts_ingred_qty = malts_ingred_qty
+        self.malt_ingred_qty = malt_ingred_qty
 
 
 class MaltIngredientSchema(ma.Schema):
     class Meta:
-        fields = ('malt_id', 'recipe_id', 'malts_ingred_qty')
+        fields = ('malt_id', 'recipe_id', 'malt_ingred_qty')
 
 
 class HopsIngredient(db.Model):
     hops_id = db.Column(db.Integer, db.ForeignKey('hops.hops_id'), primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.recipe_id'), primary_key=True)
     hops_ingred_qty = db.Column(db.Integer, nullable=False)
+    # May need to add this as a Primary Key in order to add multiples
     hops_time = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, hops_id, recipe_id, hops_ingred_qty, hops_time):

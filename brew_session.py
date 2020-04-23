@@ -112,7 +112,7 @@ class InitialBrewStep(BrewStep):
         self.session = None
         self.button = 'Start Session'
         self.message = 'Session Starting'
-        self.image = 'images/s1.png'
+        self.image = 'images.csv/s1.png'
 
     def next_step(self):
         return FillHLT()
@@ -125,7 +125,7 @@ class FillHLT(BrewStep):
         self.session = None
         self.button = 'Next'
         self.message = 'Filling HLT...'
-        self.image = 'images/s2.png'
+        self.image = 'images.csv/s2.png'
 
     def next_step(self):
         return HeatHLT()
@@ -138,7 +138,7 @@ class HeatHLT(BrewStep):
         self.session = None
         self.button = ''
         self.message = 'Heating HLT...'
-        self.image = 'images/s2.png'
+        self.image = 'images.csv/s2.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Strike Temp to reach {}'.format(self.session.recipe.strike_temp)
@@ -153,7 +153,7 @@ class FillMLT(BrewStep):
         self.session = None
         self.button = 'Next'
         self.message = 'Filling MLT...'
-        self.image = 'images/s2.png'
+        self.image = 'images.csv/s2.png'
 
     def next_step(self):
         return AddGrainToMLT()
@@ -167,7 +167,7 @@ class AddGrainToMLT(BrewStep):
         self.button = 'Next'
         self.message = 'Adding Grain to Strike Water...'
         # TODO need better image for 'AddGrainTOMLT'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def next_step(self):
         return MashGrains(self.session)
@@ -180,7 +180,7 @@ class MashGrains(BrewStep):
         self.session = session
         self.button = 'Next'
         self.message = 'Starting mash...'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
         self.session.start_mash_timer()
 
     def next_step(self):
@@ -209,7 +209,7 @@ class AddColdWater(BrewStep):
         self.session = None
         self.button = ''
         self.message = 'Cooling Mash to desired temp...'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Mash Temp to reach {}'.format(self.session.recipe.mash_temp)
@@ -228,7 +228,7 @@ class AddMoreWaterFromHLT(BrewStep):
         self.session = None
         self.button = ''
         self.message = 'Heating Mash to desired temp...'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Mash Temp to reach {}'.format(self.session.recipe.mash_temp)
@@ -248,7 +248,7 @@ class FillHLT2(BrewStep):
         self.button = 'Next'
         self.message = 'Filling HLT...'
         # TODO need better image for 'FillMLT2'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def next_step(self):
         return HeatHLT2()
@@ -266,7 +266,7 @@ class HeatHLT2(BrewStep):
         self.button = ''
         self.message = 'Heating HLT...'
         # TODO need better image for 'HeatHLT2'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Mash  Temp to reach {}'.format(self.session.recipe.mash_temp)
@@ -286,7 +286,7 @@ class MashAtRest(BrewStep):
         self.button = ''
         self.message = 'Mashing...'
         # TODO need better image for 'MashAtRest'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     # TODO Show timer and how to handle multiple steps?
     def set_temps(self, temps):
@@ -307,7 +307,7 @@ class CirculateMash(BrewStep):
         self.session = None
         self.button = ''
         self.message = 'Circulating Mash...'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     # TODO Show timer and how to handle multiple steps?
     def set_temps(self, temps):
@@ -329,7 +329,7 @@ class MashOut(BrewStep):
         self.button = ''
         self.message = 'Mashing out...'
         # TODO need better image for 'MashOut'
-        self.image = 'images/s3.png'
+        self.image = 'images.csv/s3.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Mash Out Temp to reach {}'.format(self.session.recipe.mash_out_temp)
@@ -351,7 +351,7 @@ class LauterGrains(BrewStep):
         self.session = None
         self.button = 'Next'
         self.message = 'Lautering...'
-        self.image = 'images/s4.png'
+        self.image = 'images.csv/s4.png'
 
     def next_step(self):
         return HeatBK(self.session)
@@ -364,7 +364,7 @@ class HeatBK(BrewStep):
         self.session = session
         self.button = ''
         self.message = 'Heating BK...'
-        self.image = 'images/s5.png'
+        self.image = 'images.csv/s5.png'
 
     def set_temps(self, temps):
         self.message = 'Waiting for Boil Temp to reach {}'.format(self.session.recipe.boil_temp)
@@ -381,7 +381,7 @@ class AddToBoil(BrewStep):
         self.button = 'Hops added to boil'
         self.message = 'Adding hops...'
         # TODO need better image for 'AddToBoil'
-        self.image = 'images/s5.png'
+        self.image = 'images.csv/s5.png'
         self.session.start_boil_timer()
         self.session.start_hops_timer()
 
@@ -398,7 +398,7 @@ class CoolWort(BrewStep):
         self.session = None
         self.button = ''
         self.message = 'Cooling Wort...'
-        self.image = 'images/s6.png'
+        self.image = 'images.csv/s6.png'
 
     # TODO Prompt should come from temp being reached
     def set_temps(self, temps):
@@ -414,7 +414,7 @@ class TransferToFermenter(BrewStep):
         self.session = None
         self.button = 'Finished'
         self.message = 'Transferring Wort...'
-        self.image = 'images/s7.png'
+        self.image = 'images.csv/s7.png'
 
     def next_step(self):
         return BrewSessionComplete()
@@ -426,7 +426,7 @@ class BrewSessionComplete(BrewStep):
         self.session = None
         self.button = 'Start New Session?'
         self.message = 'Session has Completed!'
-        self.image = 'images/s7.png'
+        self.image = 'images.csv/s7.png'
 
     def next_step(self):
         return InitialBrewStep()
@@ -439,7 +439,7 @@ class PauseBrewSession(BrewStep):
         self.session = None
         self.button = 'Start Session'
         self.message = 'Session has Paused!'
-        self.image = 'images/s1.png'
+        self.image = 'images.csv/s1.png'
         self.previous_step = previous_step
 
     # Return to previous step

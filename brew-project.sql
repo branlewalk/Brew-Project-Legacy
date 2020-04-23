@@ -18,10 +18,11 @@ CREATE SCHEMA IF NOT EXISTS brew_project DEFAULT CHARACTER SET utf8;
 USE brew_project ;
 
 -- -----------------------------------------------------
--- Table brew_project.images
+-- Table brew_project.images.csv
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS brew_project.image (
   image_id INT NOT NULL AUTO_INCREMENT,
+  image_description VARCHAR(45) NOT NULL,
   image_url VARCHAR(45) NOT NULL,
   PRIMARY KEY (image_id));
 
@@ -48,8 +49,8 @@ CREATE TABLE IF NOT EXISTS brew_project.style (
   CONSTRAINT image_id
     FOREIGN KEY (image_id)
     REFERENCES brew_project.image (image_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -81,18 +82,18 @@ CREATE TABLE IF NOT EXISTS brew_project.recipe (
   CONSTRAINT r_style_id
     FOREIGN KEY (style_id)
     REFERENCES brew_project.style (style_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT r_image_id
     FOREIGN KEY (image_id)
     REFERENCES brew_project.image (image_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT r_notes_id
     FOREIGN KEY (notes_id)
     REFERENCES brew_project.note (notes_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -160,13 +161,13 @@ CREATE TABLE IF NOT EXISTS brew_project.malt_ingredient (
   CONSTRAINT m_malt_id
     FOREIGN KEY (malt_id)
     REFERENCES brew_project.malt (malt_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT m_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -181,13 +182,13 @@ CREATE TABLE IF NOT EXISTS brew_project.hops_ingredient (
   CONSTRAINT h_hops_id
     FOREIGN KEY (hops_id)
     REFERENCES brew_project.hops (hops_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT h_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -202,13 +203,13 @@ CREATE TABLE IF NOT EXISTS brew_project.yeast_ingredient (
   CONSTRAINT y_yeast_id
     FOREIGN KEY (yeast_id)
     REFERENCES brew_project.yeast (yeast_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT y_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -222,13 +223,13 @@ CREATE TABLE IF NOT EXISTS brew_project.other_ingredient (
   CONSTRAINT o_other_id
     FOREIGN KEY (other_id)
     REFERENCES brew_project.other (other_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT o_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -246,8 +247,8 @@ CREATE TABLE IF NOT EXISTS brew_project.session (
   CONSTRAINT s_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -264,14 +265,14 @@ CREATE TABLE IF NOT EXISTS brew_project.temps (
   CONSTRAINT session_id
     FOREIGN KEY (session_id)
     REFERENCES brew_project.session (session_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
--- Table brew_project.steps
+-- Table brew_project.step
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS brew_project.steps (
+CREATE TABLE IF NOT EXISTS brew_project.step (
   step_id INT NOT NULL AUTO_INCREMENT,
   recipe_id INT(11) NOT NULL,
   step_name VARCHAR(16) NOT NULL,
@@ -282,8 +283,8 @@ CREATE TABLE IF NOT EXISTS brew_project.steps (
   CONSTRAINT st_recipe_id
     FOREIGN KEY (recipe_id)
     REFERENCES brew_project.recipe (recipe_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------
@@ -298,13 +299,13 @@ CREATE TABLE IF NOT EXISTS brew_project.session_step (
   CONSTRAINT ss_session_id
     FOREIGN KEY (session_id)
     REFERENCES brew_project.session (session_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT ss_step_id
     FOREIGN KEY (step_id)
-    REFERENCES brew_project.steps (step_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    REFERENCES brew_project.step (step_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------

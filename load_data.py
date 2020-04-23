@@ -75,6 +75,16 @@ def load_yeast(filename):
                   'Attenuation: {0[5]}, Min Tem: {0[6]}, Max Temp: {0[7]}'.format(yeast))
 
 
+def load_images(filename):
+    with open(filename) as f:
+        images = [line.split(',') for line in f]
+        for i, x in enumerate(images):
+            image = [x[0].strip(), x[1].strip()]
+            insert_query('INSERT INTO image(image_description, image_url) '
+                         'VALUES("{0[0]}", "{0[1]}")'.format(image))
+            print('Added: Description: {0[0]}, URL: {0[1]}'.format(image))
+
+
 def load_all_data():
     connect()
     print('Loading all data...')
@@ -82,6 +92,7 @@ def load_all_data():
     load_malt('csv/malt.csv')
     load_hops('csv/hops.csv')
     load_yeast('csv/yeast.csv')
+    load_images('csv/images.csv')
     print('...upload completed!')
     disconnect()
 
