@@ -1,6 +1,6 @@
-FROM ubuntu:16.04
+FROM python:3.6.5-slim
 
-MAINTAINER Your Name "youremail@domain.tld"
+#MAINTAINER Brandon Walker "branlewalk@gmail.com"
 
 RUN apt-get update -y && \
     apt-get install -y python-pip python-dev

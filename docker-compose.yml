@@ -1,51 +1,10 @@
 version: '2'
 services:
- rabbit:
-   image: arm32v7/rabbitmq:3-management
-   ports:
-    - "5672:5672"
-    - "15672:15672"
  server:
    image: python-image:latest
    build: .
-   links:
-    - rabbit
    ports:
     - "8080:80"
    volumes:
     - .:/app
    command: python server.py
- publisher:
-   image: python-image:latest
-   build: .
-   links:
-    - rabbit
-   volumes:
-    - .:/app
-   command: python temp_publisher.py
- persistor:
-   image: python-image:latest
-   build: .
-   links:
-    - db
-    - rabbit
-   volumes:
-    - .:/app
-   command: python temp_persistor.py
- db:
-    image: mysql-db:latest
-    ports:
-      - 3306:3306
-#    command: --default-authentication-plugin=mysql_native_password
-#    environment:
-#     - MYSQL_ROOT_PASSWORD=password
-#     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-#     - MYSQL_ROOT_HOST=%
-#     - MYSQL_USER=user
-#     - MYSQL_PASSWORD=password
-
-#  adminer:
-#    image: adminer
-#    restart: always
-#    ports:
-#      - 8080:8080
